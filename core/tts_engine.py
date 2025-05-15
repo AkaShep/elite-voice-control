@@ -79,7 +79,6 @@ class TtsEngine:
 
         return re.sub(r'(\d+\.?\d*)\s+тонн', replace_tonnage, text)
 
-    @lru_cache(maxsize=100)
     def synthesize(self, text: str) -> None:
         """Синтез речи из текста с проверкой опечаток"""
         if not text.strip():
