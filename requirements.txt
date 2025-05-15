@@ -1,0 +1,8 @@
+num2words==0.5.14
+numpy==2.2.5
+pyautogui==0.9.54
+sounddevice==0.5.1
+symspellpy==6.9.0
+torch==2.7.0
+vosk==0.3.45
+watchdog==6.0.0
