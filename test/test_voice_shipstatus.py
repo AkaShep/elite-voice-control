@@ -1,7 +1,7 @@
 # test_voice_shipstatus.py
 import logging
-from scr import EliteIntegration
-from scr import ShipState  # Импорт нового класса состояния
+from src import EliteIntegration
+from src import ShipState  # Импорт нового класса состояния
 
 class VoiceShipStatusReporter:
     """Класс для голосового отчета о статусе корабля"""
@@ -14,7 +14,7 @@ class VoiceShipStatusReporter:
 
     def _init_tts(self):
         # Убедитесь, что модуль TtsEngine доступен
-        from scr import TtsEngine  # Или укажите правильный путь
+        from src import TtsEngine  # Или укажите правильный путь
         return TtsEngine()
 
     def _format_for_speech(self) -> str:

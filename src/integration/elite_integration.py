@@ -6,6 +6,7 @@ from watchdog.observers import Observer
 from .ship_state import ShipState
 from .events import EliteJournalHandler, EventTypes
 
+
 class EliteStatusHandler:
     """Обработчик статуса корабля из Status.json"""
     def __init__(self):
@@ -42,7 +43,7 @@ class EliteIntegration:
         self.status_file = self.log_path / "Status.json"
         self._timer = None
         self._timer_lock = Lock()
-        
+        self.status_handler = EliteStatusHandler()
         self._bind_handlers()
 
     def _bind_handlers(self):
@@ -77,6 +78,7 @@ class EliteIntegration:
         def status_check():
             with self._timer_lock:
                 if self.status_file.exists():
+                    self.status_handler.update(str(self.status_file))
                     try:
                         with open(self.status_file, 'r') as f:
                             status = json.load(f)

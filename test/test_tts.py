@@ -1,4 +1,4 @@
-from scr import TtsEngine
+from src.voice.tts.tts_engine import TtsEngine
 
 def test_tts():
     tts = TtsEngine()

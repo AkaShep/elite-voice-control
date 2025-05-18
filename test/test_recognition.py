@@ -6,7 +6,7 @@ import numpy as np
 import sounddevice as sd
 
 # Фиксируем путь к корневой директории проекта
-from scr import SpeechRecognizer, SAMPLE_RATE, DEVICE
+from src import SpeechRecognizer, SAMPLE_RATE, DEVICE
 
 
 class RealTimeRecognizer:

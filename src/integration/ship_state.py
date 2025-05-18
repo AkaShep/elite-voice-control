@@ -1,5 +1,5 @@
 import logging
-from events import EventTypes
+from .events import EventTypes
 
 class ShipState:
     def __init__(self):
