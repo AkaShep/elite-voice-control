@@ -2,7 +2,7 @@ from vosk import Model, KaldiRecognizer
 import json
 import os
 from pathlib import Path  # Добавлен импорт
-from config.settings import MODEL_VOSK_PATH, SAMPLE_RATE
+from .stt_settings import MODEL_VOSK_PATH, SAMPLE_RATE
 
 class SpeechRecognizer:
     def __init__(self):

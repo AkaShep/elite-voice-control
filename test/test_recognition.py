@@ -6,11 +6,8 @@ import numpy as np
 import sounddevice as sd
 
 # Фиксируем путь к корневой директории проекта
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-sys.path.insert(0, PROJECT_ROOT)
+from scr import SpeechRecognizer, SAMPLE_RATE, DEVICE
 
-from core.speech_recognition import SpeechRecognizer
-from config.settings import SAMPLE_RATE, DEVICE
 
 class RealTimeRecognizer:
     def __init__(self):

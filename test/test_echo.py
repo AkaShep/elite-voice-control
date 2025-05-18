@@ -1,12 +1,7 @@
 # test/test_echo.py
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from config.settings import SAMPLE_RATE, DEVICE
-
-from core.speech_recognition import SpeechRecognizer
-from core.tts_engine import TtsEngine
-from core.elite_integration import EliteIntegration
+from scr import SAMPLE_RATE, DEVICE, SpeechRecognizer, TtsEngine, EliteIntegration
 import sounddevice as sd
 import queue
 import numpy as np

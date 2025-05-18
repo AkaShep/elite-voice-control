@@ -4,13 +4,13 @@ import time
 import numpy as np
 import sounddevice as sd
 from pathlib import Path
-from config.settings import SILERO_MODEL_PATH, TTS_SAMPLE_RATE, TTS_SETTINGS, TTS_DEVICE
 from functools import lru_cache
 from symspellpy import SymSpell  # Импорт библиотеки для исправления опечаток
 from num2words import num2words
 import re
 import logging
 from typing import Optional
+from .tts_settings import TTS_SAMPLE_RATE, TTS_DEVICE, SILERO_MODEL_PATH, TTS_SETTINGS
 
 class TtsEngine:
     def __init__(self):
@@ -24,7 +24,7 @@ class TtsEngine:
     def _init_spell_checker(self):
         """Инициализация корректора опечаток"""
         self.sym_spell = SymSpell()
-        dictionary_path = os.path.join(os.path.dirname(__file__), "..", "config", "ru_elite_dangerous.txt")
+        dictionary_path = os.path.join(os.path.dirname(__file__), "ru_elite_dangerous.txt")
         self.sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
 
     def _check_model(self):
