@@ -1,7 +1,7 @@
 # test/test_echo.py
 import sys
 import os
-from src import SAMPLE_RATE, DEVICE, SpeechRecognizer, TtsEngine, EliteIntegration
+from src import SAMPLE_RATE, SpeechRecognizer,TtsEngine, EliteIntegration, DEVICE
 import sounddevice as sd
 import queue
 import numpy as np

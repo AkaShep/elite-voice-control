@@ -1,6 +1,7 @@
 import logging
 import time
-from src.integration.elite_integration import EliteIntegration
+#from src.integration.elite_integration import EliteIntegration
+from src import EliteIntegration
 
 def main():
     logging.basicConfig(

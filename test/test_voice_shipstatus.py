@@ -1,7 +1,8 @@
 # test_voice_shipstatus.py
 import logging
-from src import EliteIntegration
-from src import ShipState  # Импорт нового класса состояния
+#from src.integration.elite_integration import EliteIntegration
+#from src.integration.ship_state import ShipState
+from src import EliteIntegration, ShipState
 
 class VoiceShipStatusReporter:
     """Класс для голосового отчета о статусе корабля"""
