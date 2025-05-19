@@ -27,6 +27,8 @@ class JournalWatcher(FileSystemEventHandler):
 
     def _read_existing_lines(self):
         for file in sorted(self.log_dir.glob("Journal*.log")):
+            print(f"Чтение файла: {file}")
+            self._positions[file] = 0 # Сброс позиции для ВСЕХ файлов!
             self._process_file(file, initial=True)
 
     def _process_file(self, file_path: Path, initial=False):
@@ -37,9 +39,11 @@ class JournalWatcher(FileSystemEventHandler):
             self._positions[file_path] = f.tell()
 
         for line in lines:
+            print(f"Обрабатывается строка: {line.strip()}")  # <-- ОТЛАДОЧНАЯ ПЕЧАТЬ
             try:
                 data = json.loads(line)
                 event = parse_event(data)
+                print("DEBUG event:", event)  # сюда!
                 if event:
                     self.dispatcher.dispatch(event)
             except Exception as e:

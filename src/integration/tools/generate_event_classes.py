@@ -5,7 +5,7 @@ from pathlib import Path
 from collections import defaultdict
 
 LOGS_DIR = Path.home() / "Saved Games" / "Frontier Developments" / "Elite Dangerous"
-EVENTS_DIR = Path(__file__).parent.parent / "events"
+EVENTS_DIR = Path(__file__).parent.parent / "journal" / "events"
 
 def to_snake_case(name):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)

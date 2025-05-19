@@ -1,26 +1,31 @@
 import importlib
 import pkgutil
-from .event_base import JournalEvent
+import inspect
+from integration.journal.event_base import JournalEvent
+from integration.journal.events.generic import GenericJournalEvent
 
-# Папка для автопоиска событий
-EVENTS_PKG = "integration.events"
+EVENTS_PKG = "integration.journal.events"
 
 # Собираем все Event-классы в папке events/
 EVENT_MAP = {}
 
-for _, module_name, _ in pkgutil.iter_modules(__import__(EVENTS_PKG, fromlist=['']).__path__):
+pkg = importlib.import_module(EVENTS_PKG)
+for _, module_name, is_pkg in pkgutil.iter_modules(pkg.__path__):
+    if is_pkg:
+        continue  # пропуск подпакетов
     mod = importlib.import_module(f"{EVENTS_PKG}.{module_name}")
-    # Ищем классы, унаследованные от JournalEvent
-    for attr in dir(mod):
-        obj = getattr(mod, attr)
-        if isinstance(obj, type) and issubclass(obj, JournalEvent) and obj is not JournalEvent:
-            # Имя события = имя класса без суффикса "Event"
-            event_name = attr[:-5] if attr.endswith("Event") else attr
+    for name, obj in inspect.getmembers(mod):
+        if (
+            inspect.isclass(obj)
+            and issubclass(obj, JournalEvent)
+            and obj is not JournalEvent
+            and name.endswith("Event")
+        ):
+            # Имя события = имя класса без "Event" на конце
+            event_name = name[:-5]
             EVENT_MAP[event_name] = obj
 
 def parse_event(data: dict):
     event_type = data.get("event")
-    event_cls = EVENT_MAP.get(event_type)
-    if event_cls:
-        return event_cls.from_dict(data)
-    return None
+    event_cls = EVENT_MAP.get(event_type, GenericJournalEvent)
+    return event_cls.from_dict(data)

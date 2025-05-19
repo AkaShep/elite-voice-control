@@ -6,6 +6,7 @@ from integration.journal.event_factory import parse_event
 # Универсальный принтер событий
 def print_any_event(event):
     print(f"[{event.event}] {event}")
+    print(f"[{event.event}] ({type(event)}) {event}")
 
 def main():
     dispatcher = EventDispatcher()
