@@ -1,28 +1,38 @@
- # основной интегратор
 from pathlib import Path
-from .journal.dispatcher import EventDispatcher
-from .journal.watcher import JournalWatcher
-from .state.ship_state import ShipState
-from .events.fsd_jump import FSDJumpEvent
+from integration.journal.dispatcher import EventDispatcher
+from integration.journal.watcher import JournalWatcher
+from integration.events.location import LocationEvent
+from integration.events.loadout import LoadoutEvent
+from integration.events.cargo import CargoEvent
+from integration.events.shiplocker import ShipLockerEvent
 
-class EliteIntegration:
-    def __init__(self):
-        self.dispatcher = EventDispatcher()
-        self.ship_state = ShipState()
+def print_location(event: LocationEvent):
+    print(f"[LOCATION] System: {event.StarSystem}, Body: {event.Body}, Docked: {event.Docked}")
 
-        self._bind_subscribers()
+def print_loadout(event: LoadoutEvent):
+    print(f"[LOADOUT] Ship: {event.Ship}, ShipName: {event.ShipName}")
 
-        self.watcher = JournalWatcher(self.get_log_dir(), self.dispatcher)
+def print_cargo(event: CargoEvent):
+    print(f"[CARGO] Vessel: {event.Vessel}, Count: {event.Count}, Items: {event.Inventory}")
 
-    def _bind_subscribers(self):
-        self.dispatcher.subscribe(FSDJumpEvent, self.ship_state.on_fsd_jump)
+def print_shiplocker(event: ShipLockerEvent):
+    print(f"[SHIPLOCKER] Consumables: {event.Consumables}")
 
-    def start(self):
-        self.watcher.start()
+def main():
+    dispatcher = EventDispatcher()
+    dispatcher.subscribe(LocationEvent, print_location)
+    dispatcher.subscribe(LoadoutEvent, print_loadout)
+    dispatcher.subscribe(CargoEvent, print_cargo)
+    dispatcher.subscribe(ShipLockerEvent, print_shiplocker)
 
-    def stop(self):
-        self.watcher.stop()
+    log_dir = Path.home() / "Saved Games" / "Frontier Developments" / "Elite Dangerous"
+    watcher = JournalWatcher(log_dir, dispatcher)
+    watcher.start()
+    try:
+        while True:
+            pass
+    except KeyboardInterrupt:
+        watcher.stop()
 
-    @staticmethod
-    def get_log_dir() -> Path:
-        return Path.home() / "Saved Games" / "Frontier Developments" / "Elite Dangerous"
+if __name__ == "__main__":
+    main()

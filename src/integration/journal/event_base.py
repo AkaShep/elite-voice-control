@@ -1,7 +1,5 @@
-# базовый класс события
 from dataclasses import dataclass
 from typing import Optional
-from datetime import datetime
 
 @dataclass
 class JournalEvent:

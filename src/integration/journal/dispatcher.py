@@ -1,4 +1,3 @@
-# система событийной подписки
 from collections import defaultdict
 from typing import Callable, Type, Dict, List, Any
 

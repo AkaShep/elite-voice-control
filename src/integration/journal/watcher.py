@@ -1,17 +1,9 @@
-# отслеживание изменений в log-файлах
-import os
 import json
-import time
 from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-from .dispatcher import EventDispatcher
-from ..events.fsd_jump import FSDJumpEvent
-
-EVENT_MAP = {
-    "FSDJump": FSDJumpEvent,
-    # добавим другие события позже
-}
+from integration.journal.dispatcher import EventDispatcher
+from .event_factory import parse_event
 
 class JournalWatcher(FileSystemEventHandler):
     def __init__(self, log_dir: Path, dispatcher: EventDispatcher):
@@ -47,10 +39,8 @@ class JournalWatcher(FileSystemEventHandler):
         for line in lines:
             try:
                 data = json.loads(line)
-                event_type = data.get("event")
-                if event_type in EVENT_MAP:
-                    event_cls = EVENT_MAP[event_type]
-                    event_obj = event_cls.from_dict(data)
-                    self.dispatcher.dispatch(event_obj)
+                event = parse_event(data)
+                if event:
+                    self.dispatcher.dispatch(event)
             except Exception as e:
                 print(f"[ERROR] Failed to process journal line: {e}")
