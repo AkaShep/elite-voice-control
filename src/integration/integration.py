@@ -1,38 +1,30 @@
 from pathlib import Path
 from integration.journal.dispatcher import EventDispatcher
 from integration.journal.watcher import JournalWatcher
-from integration.events.location import LocationEvent
-from integration.events.loadout import LoadoutEvent
-from integration.events.cargo import CargoEvent
-from integration.events.shiplocker import ShipLockerEvent
+from integration.journal.event_factory import parse_event
 
-def print_location(event: LocationEvent):
-    print(f"[LOCATION] System: {event.StarSystem}, Body: {event.Body}, Docked: {event.Docked}")
-
-def print_loadout(event: LoadoutEvent):
-    print(f"[LOADOUT] Ship: {event.Ship}, ShipName: {event.ShipName}")
-
-def print_cargo(event: CargoEvent):
-    print(f"[CARGO] Vessel: {event.Vessel}, Count: {event.Count}, Items: {event.Inventory}")
-
-def print_shiplocker(event: ShipLockerEvent):
-    print(f"[SHIPLOCKER] Consumables: {event.Consumables}")
+# Универсальный принтер событий
+def print_any_event(event):
+    print(f"[{event.event}] {event}")
 
 def main():
     dispatcher = EventDispatcher()
-    dispatcher.subscribe(LocationEvent, print_location)
-    dispatcher.subscribe(LoadoutEvent, print_loadout)
-    dispatcher.subscribe(CargoEvent, print_cargo)
-    dispatcher.subscribe(ShipLockerEvent, print_shiplocker)
+
+    # Автоматически подписываемся на все события (универсальный принтер)
+    # Можно добавить фильтры, если нужно (например, только важные события)
+    from integration.journal.event_base import JournalEvent
+    dispatcher.subscribe(JournalEvent, print_any_event)
 
     log_dir = Path.home() / "Saved Games" / "Frontier Developments" / "Elite Dangerous"
     watcher = JournalWatcher(log_dir, dispatcher)
     watcher.start()
+    print("Журнал Elite Dangerous запущен! Для выхода нажмите Ctrl+C.")
     try:
         while True:
             pass
     except KeyboardInterrupt:
         watcher.stop()
+        print("Завершено.")
 
 if __name__ == "__main__":
     main()
