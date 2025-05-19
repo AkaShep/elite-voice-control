@@ -3,9 +3,12 @@ import keyword
 import re
 from pathlib import Path
 from collections import defaultdict
+from datetime import datetime
 
+# Пути к журналу и папке событий
 LOGS_DIR = Path.home() / "Saved Games" / "Frontier Developments" / "Elite Dangerous"
 EVENTS_DIR = Path(__file__).parent.parent / "journal" / "events"
+LOG_FILE = Path(__file__).parent / "generate_event_classes.log"
 
 def to_snake_case(name):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
@@ -20,6 +23,7 @@ def fix_field(name):
 
 event_fields = defaultdict(set)
 
+# Чтение всех логов журнала
 for file in LOGS_DIR.glob("Journal*.log"):
     with open(file, encoding="utf-8") as f:
         for line in f:
@@ -53,6 +57,7 @@ class {class_name}(JournalEvent):
 EVENTS_DIR.mkdir(exist_ok=True)
 
 skipped, written = 0, 0
+added_events = []
 for event, fields in event_fields.items():
     class_name = event + "Event"
     file_name = to_snake_case(event) + ".py"
@@ -74,5 +79,19 @@ for event, fields in event_fields.items():
     with open(path, "w", encoding="utf-8") as f:
         f.write(code)
     written += 1
+    added_events.append(class_name)
+
+# Логирование новых событий
+LOG_FILE.parent.mkdir(exist_ok=True)
+with open(LOG_FILE, "a", encoding="utf-8") as logf:
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if added_events:
+        logf.write(f"[{now}] Добавлены новые события ({len(added_events)}): {', '.join(added_events)}\n")
+    else:
+        logf.write(f"[{now}] Нет новых событий для генерации.\n")
 
 print(f"Сгенерировано {written} новых событий, пропущено (уже есть): {skipped}. Папка: {EVENTS_DIR}")
+if added_events:
+    print("Добавлены события:", ", ".join(added_events))
+else:
+    print("Нет новых событий для генерации.")
