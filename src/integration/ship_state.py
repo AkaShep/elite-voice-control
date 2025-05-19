@@ -4,6 +4,7 @@ from .events import EventTypes
 class ShipState:
     def __init__(self):
         self.fuel = 0.0
+        self.fuel_reserve = 0.0
         self.health = 100.0
         self.pips = [0, 0, 0]  # 0-4 (ENG, WEP, SYS)
         self.ship_name = ""
@@ -28,7 +29,9 @@ class ShipState:
             # Обновление основных параметров
             raw_pips = status.get("Pips", [0, 0, 0])
             self.pips = [p // 2 for p in raw_pips]
-            self.fuel = status.get("Fuel", {}).get("FuelMain", 0.0)
+            fuel_data = status.get("Fuel", {})
+            self.fuel = fuel_data.get("FuelMain", 0.0)
+            self.fuel_reserve = fuel_data.get("FuelReservoir", 0.0)
             self.health = max(0.0, min(status.get("HullHealth", 1.0) * 100, 100.0))
             self.total_cargo = int(status.get("Cargo", 0))
             self._notify_callbacks()

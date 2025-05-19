@@ -25,7 +25,7 @@ class VoiceShipStatusReporter:
         return (
             f"Статус: {state.ship_name or 'корабль'}. "
             f"Топливо: {state.fuel:.1f} тонн. "
-            f"Резерв: {state.fuel_level:.1f} тонн. "
+            f"Резерв: {state.fuel_reserve:.1f} тонн. "
             f"Корпус: {state.health:.0f}%. "
             f"Груз: {state.total_cargo} тонн. "
             f"Режим: {self._get_ship_mode()}"
