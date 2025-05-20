@@ -1,9 +1,0 @@
-[2025-05-19 18:18:27] Добавлены новые события: ShutdownEvent, ModuleInfoEvent, DockedEvent
-[2025-05-19 18:28:03] Добавлены новые события: SupercruiseDestinationDropEvent
-[2025-05-19 18:28:47] Добавлены новые события: DockingRequestedEvent, DockingGrantedEvent
-[2025-05-19 18:30:25] Добавлены новые события: HeatWarningEvent
-[2025-05-19 18:32:12] Добавлены новые события: RefuelAllEvent, RepairAllEvent
-[2025-05-19 18:32:54] Добавлены новые события: OutfittingEvent, StoredModulesEvent
-[2025-05-19 18:33:18] Добавлены новые события: ModuleStoreEvent
-[2025-05-19 18:34:36] Добавлены новые события: ShipyardEvent, StoredShipsEvent
-[2025-05-19 18:38:26] Добавлены новые события: ShipyardTransferEvent
